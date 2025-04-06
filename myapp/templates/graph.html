@@ -1,0 +1,168 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Quantity Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Product Quantity Graph</h1>
+        <canvas id="productChart"></canvas>
+    </div>
+
+    <script>
+        // Get data from Django template
+        var productNames = JSON.parse('{{ product_names|escapejs }}');
+        var productQuantities = JSON.parse('{{ product_quantities|escapejs }}');
+
+        var ctx = document.getElementById('productChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: productNames,
+                datasets: [{
+                    label: 'Product Quantity',
+                    data: productQuantities,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Function to update the graph
+        function updateGraph(data) {
+            myChart.data.labels = data.product_names;
+            myChart.data.datasets[0].data = data.product_quantities;
+            myChart.update();
+        }
+
+        // Polling to check for updates
+        setInterval(() => {
+            fetch('/graph-data/')
+                .then(response => response.json())
+                .then(data => {
+                    updateGraph(data);
+                });
+        }, 5000);  // Poll every 5 seconds
+    </script>
+</body>
+</html> 
+ 
+
+
+   
+ -->
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Quantity Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Product Quantity Graph</h1>
+        <canvas id="productChart"></canvas>
+    </div>
+
+    <script>
+        // Get data from Django template
+        var productNames = JSON.parse('{{ product_names|escapejs }}');
+        var productQuantities = JSON.parse('{{ product_quantities|escapejs }}');
+
+        // Function to determine bar color based on quantity
+        function getBarColor(quantity) {
+            return quantity < 17 ? 'rgba(255, 99, 132, 0.6)' : 'rgba(75, 192, 192, 0.6)'; // Red if below 17, otherwise green
+        }
+
+        var ctx = document.getElementById('productChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: productNames,
+                datasets: [{
+                    label: 'Product Quantity',
+                    data: productQuantities,
+                    backgroundColor: productQuantities.map(quantity => getBarColor(quantity)), // Set color dynamically
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Function to update the graph
+        function updateGraph(data) {
+            myChart.data.labels = data.product_names;
+            myChart.data.datasets[0].data = data.product_quantities;
+            myChart.data.datasets[0].backgroundColor = data.product_quantities.map(quantity => getBarColor(quantity)); // Update colors
+            myChart.update();
+        }
+
+        // Polling to check for updates
+        setInterval(() => {
+            fetch('/graph-data/')
+                .then(response => response.json())
+                .then(data => {
+                    updateGraph(data);
+                });
+        }, 5000);  // Poll every 5 seconds
+    </script>
+</body>
+</html>

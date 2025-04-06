@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Product List Styles */
+        .product-list {
+            margin-top: 30px;
+        }
+
+        .product-list h2 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        .product-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .product-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-list li:last-child {
+            border-bottom: none;
+        }
+
+        .product-list a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .product-list a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-form {
+            display: inline;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Links Section */
+        .links-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .links-section a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .links-section a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Inventory Management System</h1>
+
+        <!-- Add Product Form -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="item_name">Item Name</label>
+                <input type="text" id="item_name" name="item_name" placeholder="Enter item name" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" placeholder="Enter price" required>
+            </div>
+            <div class="form-group">
+                <label for="holding_cost">Holding Cost</label>
+                <input type="number" id="holding_cost" name="holding_cost" placeholder="Enter holding cost" required>
+            </div>
+            <div class="form-group">
+                <label for="ordering_cost">Ordering Cost</label>
+                <input type="number" id="ordering_cost" name="ordering_cost" placeholder="Enter ordering cost" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" required>
+            </div>
+            <button type="submit">Add Product</button>
+        </form>
+
+        <!-- Product List -->
+        <div class="product-list">
+            <h2>Product List</h2>
+            <ul>
+                {% for product in products %}
+                    <li>
+                        <a href="{% url 'product_detail' product.id %}">{{ product.item_name }}</a>
+                        <form class="delete-form" action="{% url 'delete_product' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Links Section -->
+        <div class="links-section">
+            <a href="{% url 'product_graph' %}">View Product Quantity Graph</a>
+            <a href="{% url 'shop' %}">Purchase Product</a>
+            <a href="{% url 'analysis' %}">EOQ Analysis</a>
+        </div>
+    </div>
+</body>
+</html>

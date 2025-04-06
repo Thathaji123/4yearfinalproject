@@ -1,0 +1,234 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EOQ Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            max-width: 100%;
+        }
+        .list-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .list-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .list-container li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EOQ Analysis</h1>
+        <canvas id="eoqChart"></canvas>
+
+        <div class="list-container" id="itemList">
+            <h2 id="categoryTitle"></h2>
+            <ul id="items"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Data from Django
+        const eoqData = {
+            high: {{ high|default:0 }},
+            mid: {{ mid|default:0 }},
+            low: {{ low|default:0 }},
+        };
+
+        const highItems = {{ high_items|safe }};
+        const midItems = {{ mid_items|safe }};
+        const lowItems = {{ low_items|safe }};
+
+        const ctx = document.getElementById('eoqChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['High EOQ', 'Mid EOQ', 'Low EOQ'],
+                datasets: [{
+                    label: 'Number of Products',
+                    data: [eoqData.high, eoqData.mid, eoqData.low],
+                    backgroundColor: ['green', 'blue', 'red'],
+                }]
+            },
+            options: {
+                responsive: true,
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        showItems(index);
+                    }
+                }
+            }
+        });
+
+        function showItems(index) {
+            const listContainer = document.getElementById('itemList');
+            const itemList = document.getElementById('items');
+            const categoryTitle = document.getElementById('categoryTitle');
+
+            itemList.innerHTML = '';
+
+            let category = '';
+            let items = [];
+
+            if (index === 0) {
+                category = 'High EOQ Products';
+                items = highItems;
+            } else if (index === 1) {
+                category = 'Mid EOQ Products';
+                items = midItems;
+            } else if (index === 2) {
+                category = 'Low EOQ Products';
+                items = lowItems;
+            }
+
+            categoryTitle.innerText = category;
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = `${item.name} (EOQ: ${item.eoq.toFixed(2)})`;
+                itemList.appendChild(li);
+            });
+
+            listContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            max-width: 100%;
+        }
+        .list-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .list-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .list-container li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Price Analysis</h1>
+        <canvas id="priceChart"></canvas>
+
+        <div class="list-container" id="itemList">
+            <h2 id="categoryTitle"></h2>
+            <ul id="items"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Data from Django
+        const priceData = {
+            high: {{ high|default:0 }},
+            mid: {{ mid|default:0 }},
+            low: {{ low|default:0 }},
+        };
+
+        const highItems = {{ high_items|safe }};
+        const midItems = {{ mid_items|safe }};
+        const lowItems = {{ low_items|safe }};
+
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Category A', 'Category B', 'Category C'],
+                datasets: [{
+                    label: 'Number of Products',
+                    data: [priceData.high, priceData.mid, priceData.low],
+                    backgroundColor: ['green', 'blue', 'red'], // Colors for high, mid, low
+                }]
+            },
+            options: {
+                responsive: true,
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        showItems(index);
+                    }
+                }
+            }
+        });
+
+        function showItems(index) {
+            const listContainer = document.getElementById('itemList');
+            const itemList = document.getElementById('items');
+            const categoryTitle = document.getElementById('categoryTitle');
+
+            itemList.innerHTML = '';
+
+            let category = '';
+            let items = [];
+
+            if (index === 0) {
+                category = 'High Price Products';
+                items = highItems;
+            } else if (index === 1) {
+                category = 'Mid Price Products';
+                items = midItems;
+            } else if (index === 2) {
+                category = 'Low Price Products';
+                items = lowItems;
+            }
+
+            categoryTitle.innerText = category;
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = `${item.name} (Price: ${item.price.toFixed(2)})`;
+                itemList.appendChild(li);
+            });
+
+            listContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.item_name }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .product-details { max-width: 600px; margin: 0 auto; }
+        .product-details h1 { color: #4CAF50; }
+        .product-details p { font-size: 18px; }
+        .back-link { display: block; margin-top: 20px; color: #4CAF50; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="product-details">
+        <h1>{{ product.item_name }}</h1>
+        <p>Price: {{ product.price }}</p>
+        <p>Holding Cost: {{ product.holding_cost }}</p>
+        <p>Ordering Cost: {{ product.ordering_cost }}</p>
+        <p>Quantity: {{ product.quantity }}</p>
+        <p>Predicted Sales: {{ product.predicted_sales }}</p>
+        <p>EOQ: {{ product.eoq }}</p>
+        <a href="/" class="back-link">Back to Home</a>
+    </div>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.item_name }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .product-details { max-width: 600px; margin: 0 auto; }
+        .product-details h1 { color: #4CAF50; }
+        .product-details p { font-size: 18px; }
+        .back-link, .edit-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            color: white;
+            background-color: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .edit-link:hover, .back-link:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="product-details">
+        <h1>{{ product.item_name }}</h1>
+        <p>Price: {{ product.price }}</p>
+        <p>Holding Cost: {{ product.holding_cost }}</p>
+        <p>Ordering Cost: {{ product.ordering_cost }}</p>
+        <p>Quantity: {{ product.quantity }}</p>
+        <p>Predicted Sales: {{ product.predicted_sales|floatformat:0 }}</p>
+        <p>EOQ: {{ product.eoq }}</p>
+        <a href="/" class="back-link">Back to Home</a>
+        <a href="{% url 'edit_product' product.id %}" class="edit-link">Edit</a>
+    </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.item_name }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .product-details { max-width: 600px; margin: 0 auto; }
+        .product-details h1 { color: #4CAF50; }
+        .product-details p { font-size: 18px; }
+        .back-link, .edit-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            color: white;
+            background-color: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .edit-link:hover, .back-link:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="product-details">
+        <h1>{{ product.item_name }}</h1>
+        <p>Price: {{ product.price }}</p>
+        <p>Holding Cost: {{ product.holding_cost }}</p>
+        <p>Ordering Cost: {{ product.ordering_cost }}</p>
+        <p>Quantity: {{ product.quantity }}</p>
+        <p>Predicted Sales: {{ product.predicted_sales }}</p>
+        <p>EOQ: {{ product.eoq }}</p>
+        <a href="/" class="back-link">Back to Home</a>
+        <a href="{% url 'edit_product' product.id %}" class="edit-link">Edit</a>
+    </div>
+</body>
+</html>
+

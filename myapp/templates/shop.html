@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        .product-card h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .product-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .buy-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .buy-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Our Products</h1>
+        <div class="product-grid">
+            {% for product in products %}
+                <div class="product-card" id="product-{{ product.id }}">
+                    <h2>{{ product.item_name }}</h2>
+                    <p>Price: ₹{{ product.price }}</p>
+                    <p>Quantity: <span id="quantity-{{ product.id }}">{{ product.quantity }}</span></p>
+                    <button class="buy-button" onclick="buyProduct({{ product.id }})">Buy</button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Function to handle the "Buy" button click
+        function buyProduct(productId) {
+            fetch(`/buy/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token for security
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update the quantity displayed on the page
+                    const quantityElement = document.getElementById(`quantity-${productId}`);
+                    if (quantityElement) {
+                        quantityElement.textContent = data.quantity;
+                    }
+
+                    // Show alert if quantity is below 20
+                    if (data.quantity < 20) {
+                        alert(`Warning: ${data.product_name} quantity is below 20!`);
+                    }
+
+                    // If the product is deleted, remove it from the page
+                    if (data.deleted) {
+                        const productCard = document.getElementById(`product-${productId}`);
+                        if (productCard) {
+                            productCard.remove();
+                        }
+                        alert(`${data.product_name} is out of stock and has been removed.`);
+                    }
+                } else {
+                    // Show an error message
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
